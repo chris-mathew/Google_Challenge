@@ -20,6 +20,7 @@ class VideoPlayer:
 
     def show_all_videos(self):
         """Returns all videos."""
+        sorting_list = []
         print("Here's a list of all available videos:")
         video_list = self._video_library.get_all_videos()
         for videos in video_list:
@@ -31,8 +32,10 @@ class VideoPlayer:
                 else:
                     tags = tags + f" {name}"
             tags = tags + "]"
-
-            print(f"{videos.title} ({videos.video_id}) {tags}")
+            sorting_list.append(f"{videos.title} ({videos.video_id}) {tags}")
+        sorting_list.sort()
+        for vid in sorting_list:
+            print(vid)
 
     def play_video(self, video_id):
         if self._video_library.get_video(video_id) is None:
@@ -124,13 +127,16 @@ class VideoPlayer:
         print(f"Cannot add video to {playlist_name}: Playlist does not exist")
 
     def show_all_playlists(self):
-        """Display all playlists."""
+        key_list = []
         if self.playlist == {}:
             print("No playlists exist yet")
         else:
             print("Showing all playlists:")
             for key_names in list(self.playlist.keys()):
-                print(key_names)
+                key_list.append(key_names)
+            key_list.sort()
+            for items in key_list:
+                print(items)
 
     def show_playlist(self, playlist_name):
         if self.playlist == "{}":
@@ -164,7 +170,7 @@ class VideoPlayer:
                     for video in self.playlist[keys]:
                         if video_id == video.video_id:
                             self.playlist[keys].remove(video)
-                            print(f"Removed video from {playlist_name}: {video.video_id}")
+                            print(f"Removed video from {playlist_name}: {video.title}")
                             return None
                     print(f"Cannot remove video from {playlist_name}: Video is not in playlist")
                     return None
@@ -243,6 +249,7 @@ class VideoPlayer:
                     else:
                         tags = tags + f" {name}"
                 tags = tags + "]"
+
                 print(f"{index}) {video.title} ({video.video_id}) {tags}")
             print("Would you like to play any of the above? If yes, specify the number of the video.")
             print("If your answer is not a valid number, we will assume it's a no.")
@@ -253,6 +260,7 @@ class VideoPlayer:
 
     def flag_video(self, video_id, flag_reason=""):
         pass
+
     def allow_video(self, video_id):
         """Removes a flag from a video.
 
@@ -260,3 +268,5 @@ class VideoPlayer:
             video_id: The video_id to be allowed again.
         """
         print("allow_video needs implementation")
+
+
